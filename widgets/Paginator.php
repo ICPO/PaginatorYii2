@@ -70,7 +70,7 @@ class Paginator extends \yii\base\Widget
      */
     private function setURL()
     {
-        $url = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->request->getPathInfo());
+        $url = Yii::$app->urlManager->createAbsoluteUrl(Yii::$app->request->url);
 
         if (strpos($url, '?') !== false) {
             $url .= '&page=';
