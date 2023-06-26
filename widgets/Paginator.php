@@ -68,10 +68,20 @@ class Paginator extends \yii\base\Widget
     /**
      * Сформировать корректный URL
      */
-    private function setURL()
+   private function setURL()
     {
-        $get = Yii::$app->request->get();
+        if (Yii::$app->request->referrer) {
+            parse_str(parse_url(Yii::$app->request->referrer, PHP_URL_QUERY), $get);
+            $actionLink = str_replace(Url::base(true).'/','',Yii::$app->request->referrer);
+            $actionLink = preg_replace('/\\?.*/','',$actionLink);
+        }else{
+            $actionLink = Yii::$app->request->pathInfo;
+        }
+
+        # skip slug
+        if (isset($get['slug'])) unset($get['slug']);
         $get['page'] = '';
-        $this->url = '?'.http_build_query($get);
+        $this->url =  Url::base(true).'/'.$actionLink.'?'.http_build_query($get);
+
     }
 }
